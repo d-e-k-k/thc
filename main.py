@@ -1,16 +1,19 @@
-from csv_summarizer import CSVSummarizer, NumericSummary, Column
-import json
-# csv_summarizer = CSVSummarizer(r'data.csv')
+from table import Table
+import os
+import sys
+import errno
 
-# for column in csv_summarizer.columns_dict.keys():
-#     print(column, csv_summarizer.columns_dict[column]["data"][0])
-# csv_summarizer.print_column_summaries()
-# print(csv_summarizer.header)
-# print(csv_summarizer.columns_data[0])
-# c1_summary = NumericSummary([float(i) for i in csv_summarizer.columns_data[0]])
-# print(json.dumps(c1_summary.get_summary()))
+def main():
+    try:
+        file_name = sys.argv[1]
+        if os.path.exists(file_name):
+            print(os.path.basename(file_name))
+            table = Table(file_name)
+            table.print_table_summary()
+        else:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_name)
+    except IndexError:
+        print("Usage: " + os.path.basename(__file__) + " <file_path>")
 
-column = Column('widths', ["1", "2", "3", "cat"])
-print(column.name)
-print(column.type)
-print(column.data)
+if __name__ == "__main__":
+    main()
