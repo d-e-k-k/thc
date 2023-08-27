@@ -9,6 +9,7 @@ class CSVSummarizer:
             self._reader = self._read_csv()
             self.header = next(self._reader)
             self.columns_data = list(zip(*self._reader))
+            self.columns_dict = self.create_column_dictionary()
     
     def _read_csv(self) -> Iterator[list[str]]:
           with open(self.file_path, newline='') as file_handler:
@@ -16,7 +17,33 @@ class CSVSummarizer:
             for row in csv_reader:
                  yield row
 
+    def create_column_dictionary(self) -> dict[str, dict[str, Union[list[str], list[float]]]]:
+        column_dictionary = {}
+        for idx, name in enumerate(self.header):
+            try:
+                column_dictionary[name] = {
+                    "data": [float(value) for value in self.columns_data[idx]],
+                    "type": float
+                }
+            except:
+                column_dictionary[name] = {
+                    "data": self.columns_data[idx],
+                    "datatype": str
+                }
+        return column_dictionary
+
+class Column:
+    def __init__(self, name: str, data: list[str]) -> None:
+        self.name = name
+        self.data = self._parse_data(data)
+        self.type = type(self.data[0])
     
+    @staticmethod
+    def _parse_data(data) -> Union[list[str], list[float]]:
+        try:
+            return [float(datapoint) for datapoint in data]
+        except:
+            return data
 
 class NumericSummary:
     def __init__(self, data: list[Union[int, float]]) -> None:
