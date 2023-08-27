@@ -1,23 +1,8 @@
-from csv_summarizer import CSVSummarizer
-
+from csv_summarizer import CSVSummarizer, NumericSummary
+import json
 csv_summarizer = CSVSummarizer(r'data.csv')
 
 print(csv_summarizer.header)
-print(sum(float(v) for v in csv_summarizer.columns_data[0]))
-# import csv
-
-# path = r'data.csv'
-
-# file_handler = open(path, newline='')
-# reader = csv.reader(file_handler)
-
-# headers = next(reader)
-
-
-# number_of_columns = len(headers)
-
-# print(number_of_columns)
-
-# def get_csv_attributes()
-#     pass
-
+print(csv_summarizer.columns_data[0])
+c1_summary = NumericSummary([float(i) for i in csv_summarizer.columns_data[0]])
+print(json.dumps(c1_summary.get_summary()))
