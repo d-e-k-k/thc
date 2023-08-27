@@ -3,8 +3,7 @@ from csv_summarizer import CSVSummarizer
 csv_summarizer = CSVSummarizer(r'data.csv')
 
 print(csv_summarizer.header)
-print(csv_summarizer.data[0])
-
+print(sum(float(v) for v in csv_summarizer.columns_data[0]))
 # import csv
 
 # path = r'data.csv'
